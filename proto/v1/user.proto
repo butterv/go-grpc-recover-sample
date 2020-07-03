@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package v1;
+option go_package = "github.com/istsh/go-grpc-recover-sample/app/pb/v1/user";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/user"
+            body: "*"
+        };
+    }
+}
+
+message CreateUserRequest {
+    string email = 1 [(validate.rules).string = { min_len: 3, max_len: 254 }];
+    string password = 2 [(validate.rules).string = { min_len: 8, max_len: 64 }];
+}
+
+message CreateUserResponse {
+}
